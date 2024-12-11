@@ -5,7 +5,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes import notifications
+from routes import notifications_controller
 
 
 app = FastAPI(
@@ -23,7 +23,7 @@ app.add_middleware(
 
 
 app.include_router(
-    notifications.router, # APIRouter-object
+    notifications_controller.router, # APIRouter-object
     prefix="/api/notifications", # Prefix for requests
     tags=["Notifications"] # Tags for http://localhost:8000/docs
 )

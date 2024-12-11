@@ -8,7 +8,7 @@ Base = declarative_base()
 class Notification(Base):
     __tablename__ = "notifications"
 
-    id = Column("notif_id", Integer, primary_key=True, index=True)
+    id = Column("notif_id", Integer, autoincrement=True, primary_key=True, index=True)
     message = Column("notif_message", String, nullable=False)
     task_id = Column("task_id", Integer, ForeignKey("tasks.task_id"), nullable=False)
     user_id = Column("user_id", Integer, ForeignKey("users.user_id"), nullable=False)
