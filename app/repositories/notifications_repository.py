@@ -1,11 +1,21 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import asc, select
 from sqlalchemy.orm import selectinload
 
 from models import Notification
 
 async def get_all(db: AsyncSession):
-    result = await db.execute(select(Notification).options(selectinload(Notification.task), selectinload(Notification.user)))
+    result = await db.execute(select(Notification).options(selectinload(Notification.task), selectinload(Notification.user)).order_by(asc(Notification.id)))
+    db_notifications = result.scalars().all()  # get list of objects Notification
+    return  db_notifications
+
+async def get_for_user(db: AsyncSession, id: int):
+    result = await db.execute(
+            select(Notification)
+            .options(selectinload(Notification.task), selectinload(Notification.user))
+            .where(Notification.user_id == id)
+            .order_by(asc(Notification.id))
+        )
     db_notifications = result.scalars().all()  # get list of objects Notification
     return  db_notifications
 
@@ -42,4 +52,3 @@ async def saveChanges(notification: Notification, db: AsyncSession):
     notification = result.scalar_one_or_none()
     
     return notification
-    

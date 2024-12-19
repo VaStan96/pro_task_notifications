@@ -17,6 +17,16 @@ async def fetch_notifications(db: AsyncSession):
     
     return response_notifications
 
+async def fetch_notifications_by_user(db: AsyncSession, id: int):
+    db_notifications = await repo.get_for_user(db, id)
+
+    if not db_notifications:
+        raise HTTPException(status_code=404, detail="No notifications found")
+
+    response_notifications = [utils.serilize_notification(notif) for notif in db_notifications]
+    
+    return response_notifications
+
 
 async def create_new_notification(new_request: RequestNotification, db: AsyncSession):
     complett_notification = utils.serilize_requestNotification(new_request)
