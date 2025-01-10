@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-DB_URL = "postgresql+asyncpg://postgres:12345678@localhost:5432/ProTaskBD"
+DB_URL = "postgresql+asyncpg://admin:12345678@postgres:5432/ProTaskBD"
 
 engine = create_async_engine(DB_URL, echo=True, future=True, pool_pre_ping=True)
 

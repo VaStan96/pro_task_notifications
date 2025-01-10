@@ -11,7 +11,7 @@ import security
 
 router = APIRouter()
 
-@router.get("/get", response_model=List[ResponseNotification])
+@router.get("/", response_model=List[ResponseNotification])
 async def get_notifications(db: AsyncSession = Depends(get_db), current_user: dict = Depends(security.get_current_user)) -> List[ResponseNotification]:
     return await notifications_service.fetch_notifications(db)
 
