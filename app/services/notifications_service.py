@@ -1,9 +1,7 @@
-from datetime import datetime
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import Notification
-from schemas import ResponseNotification, RequestNotification
+from schemas import RequestNotification
 from repositories import notifications_repository as repo
 import utils
 
@@ -28,8 +26,8 @@ async def fetch_notifications_by_user(db: AsyncSession, id: int):
     return response_notifications
 
 
-async def create_new_notification(new_request: RequestNotification, db: AsyncSession):
-    complett_notification = utils.serilize_requestNotification(new_request)
+async def create_new_notification(new_request: dict, db: AsyncSession):
+    complett_notification = utils.serilize_requestDict(new_request)
     
     request_notification = await repo.new(complett_notification, db)
     if request_notification is None:
