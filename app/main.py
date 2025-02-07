@@ -6,15 +6,21 @@ import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from events.kafka_consumer import consume
+from events import kafka_consumer
+from events import scheduler
+
+from db import redis
 
 from routes import notifications_controller
 
 async def lifespan(app: FastAPI):
     loop = asyncio.get_event_loop()
-    loop.create_task(consume())
+    loop.create_task(kafka_consumer.consume())
+    await scheduler.start_scheduler()
+    await redis.get_redis()
     yield
-
+    await redis.close_redis()
+ 
 app = FastAPI(
     title="Notification Service",
     description="Notification Service",

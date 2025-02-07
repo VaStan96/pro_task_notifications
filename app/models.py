@@ -7,6 +7,7 @@ Base = declarative_base()
 
 class Notification(Base):
     __tablename__ = "notifications"
+    __table_args__ = {"extend_existing": True}
 
     id = Column("notif_id", Integer, autoincrement=True, primary_key=True, index=True)
     message = Column("notif_message", String, nullable=False)
@@ -18,12 +19,26 @@ class Notification(Base):
     task = relationship("Task", back_populates="notifications")
     user = relationship("User", back_populates="notifications")
 
+# class DeletedNotification(Base):
+#     __tablename__ = "notifications"
+#     __table_args__ = {"extend_existing": True}
+
+#     id = Column("notif_id", Integer, autoincrement=True, primary_key=True, index=True)
+#     message = Column("notif_message", String, nullable=False)
+#     task_id = Column("task_id", Integer, nullable=True)
+#     user_id = Column("user_id", Integer, ForeignKey("users.user_id"), nullable=False)
+#     is_read = Column("notif_is_read", Boolean)
+#     created_at = Column("notif_created_at", DateTime)
+
+#     user = relationship("User", back_populates="notifications")
+
 class Task(Base):
     __tablename__ = "tasks"
 
     id = Column("task_id", Integer, primary_key=True)
     user_id = Column("user_id", Integer, ForeignKey("users.user_id"), nullable=False)
     name = Column("task_name", String, nullable=False)
+    deadline = Column("task_deadline", DateTime)
     
     notifications = relationship("Notification", back_populates="task")
     user = relationship("User", back_populates="tasks")

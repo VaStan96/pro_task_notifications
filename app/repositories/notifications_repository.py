@@ -20,7 +20,7 @@ async def get_for_user(db: AsyncSession, id: int):
     return  db_notifications
 
 
-async def new(newNotification: Notification, db: AsyncSession):
+async def new(newNotification, db: AsyncSession):
     db.add(newNotification)
     await db.commit()
     await db.refresh(newNotification)
@@ -52,3 +52,13 @@ async def saveChanges(notification: Notification, db: AsyncSession):
     notification = result.scalar_one_or_none()
     
     return notification
+
+async def get_notification_with_deadline(db: AsyncSession, id: int):
+    result = await db.execute(
+            select(Notification)
+            .options(selectinload(Notification.task), selectinload(Notification.user))
+            .where(Notification.user_id == id, Notification.message.startswith("Attention!"))
+            .order_by(asc(Notification.id))
+        )
+    db_notification = result.scalar_one_or_none()  # get object Notification or None
+    return db_notification

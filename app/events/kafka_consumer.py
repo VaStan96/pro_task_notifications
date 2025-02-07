@@ -3,7 +3,6 @@ from aiokafka import AIOKafkaConsumer
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from db.session import get_db
-#from fastapi import Depends
 
 from services.notifications_service import create_new_notification
 import config
@@ -11,7 +10,8 @@ import config
 async def consume():
     # make Kafka-consumer
     consumer = AIOKafkaConsumer(
-        config.KAFKA_TOPIC,
+        config.KAFKA_TOPIC_CREATE,
+        config.KAFKA_TOPIC_DELETE,
         bootstrap_servers=config.KAFKA_SERVER,
         group_id=config.KAFKA_GROUP_ID
     )
@@ -31,7 +31,3 @@ async def consume():
     finally:
         # disconnect
         await consumer.stop()
-
-
-# async def create_notification(request: dict, db: AsyncSession):
-#     return await create_new_notification(request, db)

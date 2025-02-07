@@ -15,6 +15,18 @@ def serilize_notification(notification: Notification) -> ResponseNotification:
         is_read=notification.is_read
     )
 
+# Dict to Response Notification
+def serilize_jsonToResponseNotification(json: dict) -> ResponseNotification:
+    return ResponseNotification(
+        id=json.get('id'),
+        message=json.get('message'),
+        task_name=json.get('task_name'),
+        user_name=json.get('user_name'),
+        created_at=datetime.fromisoformat(json.get('created_at')),
+        is_read=json.get('is_read')
+    )
+
+
 #RequestNotification to Notification
 def serilize_requestNotification(request: RequestNotification) -> Notification:
     return Notification(

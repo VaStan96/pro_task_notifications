@@ -5,3 +5,5 @@ asyncpg
 psycopg2
 python-jose
 aiokafka
+apscheduler
+redis

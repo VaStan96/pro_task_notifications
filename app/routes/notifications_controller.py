@@ -1,7 +1,5 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from services import notifications_service
@@ -12,7 +10,7 @@ import security
 router = APIRouter()
 
 @router.get("/", response_model=List[ResponseNotification])
-async def get_notifications(db: AsyncSession = Depends(get_db), current_user: dict = Depends(security.get_current_user)) -> List[ResponseNotification]:
+async def get_notifications(db: AsyncSession = Depends(get_db)) -> List[ResponseNotification]:
     return await notifications_service.fetch_notifications(db)
 
 @router.get("/getByUser", response_model=List[ResponseNotification])
